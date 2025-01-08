@@ -10,14 +10,16 @@ class PriorityQueue:
     def pop(self):
         if self.is_empty():
             raise IndexError("Pop from an empty priority queue")
-        return self.__queue.pop(0)[1]
+        return self.__queue.pop(0)
     
     
     def peek(self):
          if self.is_empty():
             raise IndexError("Peek from an empty priority queue")
-         return self.__queue[0][1]
-        
+         return self.__queue[0]
+     
+
+          
     def is_empty(self):
         return len(self.__queue) == 0
 
