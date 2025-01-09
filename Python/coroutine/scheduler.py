@@ -37,21 +37,20 @@ if __name__ == "__main__":
             print(f"Task executing at count {count}")
             if count < 2:
                 count += 1
-                yield 2  # Run again in 2 seconds for first two executions
+                yield 2 
             else:
                 count += 1
-                yield 5  # Then wait 5 seconds between executions
+                yield 5  
     
     def countdown_task():
         for i in range(5, 0, -1):
             print(f"Countdown: {i}")
-            yield i  # Wait i seconds before next execution
+            yield i 
     
     scheduler = Scheduler()
     
-    # Example usage
-    scheduler.add(variable_task(), 1)  # Start after 1 second
-    scheduler.add(countdown_task(), 0)  # Start immediately
+    scheduler.add(variable_task(), 1)  
+    scheduler.add(countdown_task(), 0) 
     
     print("Running scheduler...")
     scheduler.run()
