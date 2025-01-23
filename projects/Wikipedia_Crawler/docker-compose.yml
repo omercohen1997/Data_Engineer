@@ -34,7 +34,7 @@ services:
 
   fetcher:
     build:
-      context: .
+      context: ./fetcher
     container_name: fetcher
     depends_on:
       rabbitmq:
@@ -45,7 +45,19 @@ services:
       - RABBITMQ_URI=amqp://guest:guest@rabbitmq:5672/
       - MONGO_URI=mongodb://mongodb:27017/
     volumes:
-      - ./storage:/app/storage
+      - ./fetcher/storage:/app/storage
+    restart: on-failure
+
+  parser:
+    build:
+      context: ./parser
+    container_name: parser
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - RABBITMQ_URI=amqp://guest:guest@rabbitmq:5672/
+      - MONGO_URI=mongodb://mongodb:27017/
     restart: on-failure
 
 volumes:

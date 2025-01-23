@@ -4,7 +4,7 @@
 	1. לעלות את הכל ל-git ול-docker hub
 	2. לבדוק מה מ-todo שפה ושבקוד שווה לעשות לפני שממשיכים
 
-
+- change the queues name not to be hardcoded  (maybe thorught a setup or env variable)
 
 - check if it is better to ack by myself after consume from a message queue instead of automatically ack alone after consume (ack = true/false)
 
@@ -20,17 +20,12 @@ to the fetcher (throught the message queue).
 
 - in fetcher: instead of passing  response.text to the function and then doing bs(response.text) just pass the soup or url?
 
+- if im doint docker compose down and then compose up should the queues be empty or with the data from before ?
+- add gitignore
 
+- check my yaml vs Tomer yaml
 
-
-
-
-
-
-
-
-
-
+- add .env 
 
 
 

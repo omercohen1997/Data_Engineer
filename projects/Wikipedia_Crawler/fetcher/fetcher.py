@@ -14,6 +14,7 @@ class Fetcher:
         os.makedirs(self.storage_dir, exist_ok=True)    
 
         # Rabbitmq setup
+        #TODO: Get rid of self.rabbimq_uri , i dont think i need it as class variable
         self.rabbitmq_uri = rabbitmq_uri
         self.rabbitmq_connection = pika.BlockingConnection(pika.URLParameters(self.rabbitmq_uri))
         self.channel = self.rabbitmq_connection.channel()
@@ -103,10 +104,13 @@ class Fetcher:
             self.logger.error(f"Error sending links to parser queue: {e}")
        
        
-    # Extract the links from specific html page
     def extract_links(self, html_content, base_url):
         soup = bs(html_content, "html.parser")
-        links = [urljoin(base_url, a["href"]) for a in soup.find_all("a", href=True)]
+        content_div = soup.find("div", id="mw-content-text")
+        if not content_div:
+            self.logger.warning("No 'mw-content-text' section found.")
+            return []
+        links = [urljoin(base_url, a["href"]) for a in content_div.find_all("a", href=True)]
         return links
 
     
