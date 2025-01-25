@@ -21,14 +21,6 @@ class Fetcher:
         self.channel.queue_declare(queue="fetcher_queue", durable=True)
         self.channel.queue_declare(queue="parser_queue", durable=True)
 
-        """ #TODO: Maybe create a service that will add the first url and active all the message_queues
-        self.channel.basic_publish(exchange='',  
-            routing_key='fetcher_queue',  
-            body="https://en.wikipedia.org/wiki/Distributed_systems",  
-            properties=pika.BasicProperties(
-                delivery_mode=2  # Make the message persistent
-            ))
-         """
         # MongoDB setup 
         self.mongo_client = MongoClient(mongo_uri)
         self.db = self.mongo_client["wikipedia_crawler"]

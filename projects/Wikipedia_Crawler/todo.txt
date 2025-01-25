@@ -1,4 +1,5 @@
 
+- maybe change to mongosh
 
 - change the queues name not to be hardcoded  (maybe thorught a setup or env variable)
 
