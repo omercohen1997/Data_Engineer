@@ -21,14 +21,14 @@ class Fetcher:
         self.channel.queue_declare(queue="fetcher_queue", durable=True)
         self.channel.queue_declare(queue="parser_queue", durable=True)
 
-        #TODO: Maybe create a service that will add the first url and active all the message_queues
+        """ #TODO: Maybe create a service that will add the first url and active all the message_queues
         self.channel.basic_publish(exchange='',  
             routing_key='fetcher_queue',  
             body="https://en.wikipedia.org/wiki/Distributed_systems",  
             properties=pika.BasicProperties(
                 delivery_mode=2  # Make the message persistent
             ))
-        
+         """
         # MongoDB setup 
         self.mongo_client = MongoClient(mongo_uri)
         self.db = self.mongo_client["wikipedia_crawler"]
@@ -135,28 +135,19 @@ class Fetcher:
     def save_to_db(self, url, local_file_path, last_edited_time):
         try:
             existing_record = self.collection.find_one({"url": url})
-            if existing_record:
-                self.collection.update_one(
-                        {"url": url},
-                        {"$set": {
-                            "local_path": local_file_path,
-                            "metadata.last_edited": last_edited_time
-                        }}
-                    )
-                self.logger.info(f"Updated metadata for URL: {url}")
-                
-            else:
-                self.collection.insert_one({
+            if not existing_record:
+                result = self.collection.insert_one({
                     "url": url,
                     "local_path": local_file_path,
                     "metadata": {
                         "last_edited": last_edited_time
                     }
                 })
-                self.logger.info(f"Inserted metadata for URL: {url}")
-                
+                self.logger.info(f"Inserted To database: {url}, ID: {result.inserted_id}")
+            else:
+                self.logger.info(f"Already exists: {url}")
         except Exception as e:
-            self.logger.error(f"Error saving metadata to MongoDB: {e}")
+            self.logger.error(f"MongoDB insertion error: {e}")
 
 
     def consume_url(self):
@@ -198,8 +189,3 @@ if __name__ == "__main__":
         fetcher.logger.info("Interrupted by user.")
         fetcher.cleanup()
             
-    #extracted_links = fetcher.fetch_and_save(initial_url)
-        """   fetcher.consume_url()
-        print("\nExtracted Links:")
-        for link in extracted_links:
-            print(link) """

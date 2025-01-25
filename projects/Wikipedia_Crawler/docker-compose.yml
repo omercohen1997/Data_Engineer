@@ -3,8 +3,8 @@ services:
     image: rabbitmq:management
     container_name: rabbitmq
     ports:
-      - "5672:5672" # RabbitMQ service port
-      - "15672:15672" # RabbitMQ Management UI port
+      - "5672:5672"
+      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
@@ -60,6 +60,35 @@ services:
       - MONGO_URI=mongodb://mongodb:27017/
     restart: on-failure
 
+  filter:
+    build:
+      context: ./filter
+    container_name: filter
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - RABBITMQ_URI=amqp://guest:guest@rabbitmq:5672/
+      - REDIS_URI=redis://redis:6379/0
+    restart: on-failure
+
+  redis:
+    image: redis:7.0
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
 volumes:
   mongo_data:
   rabbitmq_data:
+  redis_data:

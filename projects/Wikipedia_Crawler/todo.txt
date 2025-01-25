@@ -1,8 +1,4 @@
 
-- עצרתי ש-fetcher מעביר הודעות ל-parser queue 
-- לפני שממשיכים ל-parser :
-	1. לעלות את הכל ל-git ול-docker hub
-	2. לבדוק מה מ-todo שפה ושבקוד שווה לעשות לפני שממשיכים
 
 - change the queues name not to be hardcoded  (maybe thorught a setup or env variable)
 

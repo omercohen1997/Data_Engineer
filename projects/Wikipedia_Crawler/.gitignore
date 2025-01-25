@@ -1,0 +1,15 @@
+# Ignore runtime-generated storage
+fetcher/storage/html_files/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore Docker and system-specific files
+*.log
+docker-data/
+
+# Do not ignore todo.txt
+!todo.txt
+
