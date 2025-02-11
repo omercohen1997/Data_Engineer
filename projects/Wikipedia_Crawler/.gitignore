@@ -10,6 +10,5 @@ __pycache__/
 *.log
 docker-data/
 
-# Do not ignore todo.txt
-!todo.txt
+todo.txt
 

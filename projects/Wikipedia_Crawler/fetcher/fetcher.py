@@ -88,7 +88,7 @@ class Fetcher:
                     routing_key='parser_queue',  
                     body=link,
                     properties=pika.BasicProperties(
-                        delivery_mode=2  # Make the message persistent
+                        delivery_mode=2  
                     )
                 )
             self.logger.info(f"Sent {len(links)} links to the parser queue.")
